@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pricing</title>
+  <style>
+    :root {
+      --primary-color: #2C3E50;
+      --secondary-color: #3498DB;
+      --accent-color: #E74C3E;
+      --dark: #1a1a1a;
+      --light: #ffffff;
+    }
+  
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+  
+    body {
+      background: #f8f9fc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: 70px; /* Space for fixed navbar */
+    }
+  
+    /* Navbar Styles */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--primary-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+  
+    .nav-brand {
+      color: var(--light);
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+  
+    .nav-link {
+      color: var(--light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+  
+    .nav-link:hover {
+      color: var(--secondary-color);
+    }
+  
+    .auth-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+  
+    .login-btn, .signup-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  
+    .login-btn {
+      color: var(--light);
+      border: 1px solid var(--light);
+    }
+  
+    .signup-btn {
+      background: var(--accent-color);
+      color: var(--light);
+    }
+  
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 5px;
+      z-index: 1001;
+    }
+  
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: var(--light);
+      margin: 2px 0;
+      transition: all 0.3s ease;
+      display: block;
+    }
+  
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: var(--primary-color);
+      padding: 1rem;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 999;
+    }
+  
+    .mobile-menu .nav-link {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+  
+    .mobile-menu.active {
+      display: flex;
+    }
+  
+    .pricing-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 1rem;
+    }
+  
+    .pricing-card {
+      background: var(--light);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+  
+    .pricing-card:hover {
+      transform: translateY(-5px);
+    }
+  
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  
+    .pricing-header h2 {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+  
+    .price {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--dark);
+    }
+  
+    .price span {
+      font-size: 1rem;
+      color: #666;
+    }
+  
+    .features {
+      list-style: none;
+      margin: 2rem 0;
+    }
+  
+    .features li {
+      margin: 1rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+  
+    .features li::before {
+      content: "✓";
+      color: var(--secondary-color);
+      position: absolute;
+      left: 0;
+    }
+  
+    .cta-button {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: var(--secondary-color);
+      color: var(--light);
+      text-align: center;
+      text-decoration: none;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+  
+    .cta-button:hover {
+      background: var(--accent-color);
+    }
+  
+    .most-popular {
+      position: relative;
+      border: 2px solid var(--secondary-color);
+    }
+  
+    .popular-badge {
+      position: absolute;
+      top: -12px;
+      right: 2rem;
+      background: var(--secondary-color);
+      color: var(--light);
+      padding: 0.25rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.875rem;
+    }
+  
+    .affiliate-card {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: var(--light);
+    }
+  
+    .affiliate-card .pricing-header h2,
+    .affiliate-card .price,
+    .affiliate-card .features li::before {
+      color: var(--light);
+    }
+  
+    .affiliate-card .price span {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  
+    .affiliate-card .cta-button {
+      background: var(--light);
+      color: var(--primary-color);
+    }
+  
+    .affiliate-card .cta-button:hover {
+      background: var(--accent-color);
+      color: var(--light);
+    }
+  
+    @media (max-width: 768px) {
+      .pricing-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .hamburger {
+        display: flex;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .auth-buttons {
+        gap: 0.5rem;
+      }
+  
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+  
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+  
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="index.html" class="nav-brand">ScholaFit</a>
+      
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+  
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="pricing.html" class="nav-link">Pricing</a>
+        <a href="About.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+  
+      <div class="mobile-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="pricing.html" class="nav-link">Pricing</a>
+        <a href="About.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+  
+      <div class="auth-buttons">
+        <a href="signup.html" class="login-btn">Login</a>
+        <a href="signup.html" class="signup-btn">Sign Up</a>
+      </div>
+    </nav>
+  
+    <div class="pricing-container">
+      <!-- Free Plan -->
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h2>Free Plan</h2>
+          <div class="price">₦0 <span>/7 days</span></div>
+        </div>
+        <ul class="features">
+          <li>Access to all UTME syllabus subjects</li>
+          <li>Two practice tests with result analysis</li>
+          <li>Basic AI-powered recommendations</li>
+          <li>Limited to initially selected subjects</li>
+        </ul>
+        <a href="signup.html" class="cta-button">Get Started</a>
+      </div>
+  
+      <!-- Premium Plan -->
+      <div class="pricing-card most-popular">
+        <span class="popular-badge">Most Popular</span>
+        <div class="pricing-header">
+          <h2>Premium</h2>
+          <div class="price">₦5,000 <span>/month</span></div>
+        </div>
+        <ul class="features">
+          <li>Unlimited practice tests and quizzes</li>
+          <li>Comprehensive performance analytics</li>
+          <li>Advanced AI-powered learning paths</li>
+          <li>Change subjects anytime</li>
+          <li>Full access to study materials</li>
+          <li>Priority customer support</li>
+          <li><strong>Earn ₦1,500 for every friend you refer!</strong></li>
+        </ul>
+        <a href="signup.html" class="cta-button">Subscribe & Start Earning</a>
+      </div>
+  
+      <!-- Enterprise Plan -->
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h2>Enterprise</h2>
+          <div class="price">₦2,000 <span>/month/student</span></div>
+        </div>
+        <ul class="features">
+          <li>All premium features for 50+ students</li>
+          <li>Centralized management dashboard</li>
+          <li>Bulk student enrollment</li>
+          <li>Customizable learning paths</li>
+          <li>Dedicated account manager</li>
+          <li>Premium support</li>
+          <li><strong>Earn ₦600 per referred student!</strong></li>
+        </ul>
+        <a href="contact.html" class="cta-button">Contact Sales</a>
+      </div>
+    </div>
+  
+    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: var(--light); margin-top: 2rem;">
+      <h2 style="font-size: 2rem; margin-bottom: 1rem;">Turn Your Network into Income! 🚀</h2>
+      <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto; line-height: 1.6;">
+        Join ScholaFit and earn while you learn! Get ₦1,500 for every friend who subscribes to our Premium plan. 
+        Share your success story and help others excel in their UTME preparation while building your income.
+        The more friends succeed with ScholaFit, the more you earn!
+      </p>
+      <a href="signup.html" class="cta-button" style="max-width: 300px; margin: 2rem auto; background: var(--accent-color);">
+        Start Earning Today!
+      </a>
+    </div>
+  
+    <script>
+      // Add hover animations
+      document.querySelectorAll('.pricing-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transform = 'translateY(-10px)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'translateY(0)';
+        });
+      });
+  
+      // Hamburger menu functionality
+      const hamburger = document.querySelector('.hamburger');
+      const mobileMenu = document.querySelector('.mobile-menu');
+  
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+      });
+  
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+          hamburger.classList.remove('active');
+          mobileMenu.classList.remove('active');
+        }
+      });
+    </script>
+  </body>
+  </html>

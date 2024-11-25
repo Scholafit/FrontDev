@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Scholafit Practice Test</title>
+        <style>
+            :root {
+                --primary-color: #2C3E50;
+                --secondary-color: #3498DB;
+                --accent-color: #E74C3E;
+                --dark: #1a1a1a;
+                --light: #ffffff;
+            }
+        
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: Arial, sans-serif;
+            }
+        
+            body {
+                background-color: var(--dark);
+                padding: 20px;
+            }
+        
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                background: var(--light);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                display: grid;
+                grid-template-columns: 200px 1fr;
+                gap: 20px;
+            }
+        
+            .main-content {
+                flex: 1;
+            }
+        
+            .header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+        
+            .header h1 {
+                color: var(--primary-color);
+            }
+        
+            .subject-tabs {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+                border-bottom: 2px solid var(--secondary-color);
+                padding-bottom: 10px;
+            }
+        
+            .subject-tab {
+                padding: 10px 20px;
+                background: var(--light);
+                border: 2px solid var(--secondary-color);
+                border-radius: 5px 5px 0 0;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                color: var(--primary-color);
+            }
+        
+            .subject-tab:hover {
+                background: var(--secondary-color);
+                color: var(--light);
+            }
+        
+            .subject-tab.active {
+                background: var(--secondary-color);
+                color: var(--light);
+            }
+        
+            .timer {
+                font-size: 24px;
+                color: var(--accent-color);
+                margin-bottom: 20px;
+                text-align: right;
+            }
+        
+            .question-container {
+                margin: 20px 0;
+            }
+        
+            .question {
+                margin-bottom: 20px;
+                color: var(--primary-color);
+            }
+        
+            .options {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-left: 20px;
+            }
+        
+            .option {
+                padding: 10px;
+                border: 1px solid var(--secondary-color);
+                border-radius: 5px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+        
+            .option:hover {
+                background: var(--secondary-color);
+                color: var(--light);
+            }
+        
+            .option.selected {
+                background: var(--secondary-color);
+                color: var(--light);
+            }
+        
+            .navigation {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 20px;
+                align-items: center;
+            }
+        
+            .nav-buttons {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        
+            .nav-button, .submit-button {
+                padding: 10px 20px;
+                background: var(--secondary-color);
+                color: var(--light);
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+        
+            .nav-button:hover, .submit-button:hover {
+                background: var(--primary-color);
+            }
+        
+            .submit-button {
+                background: var(--accent-color);
+                width: 200px;
+            }
+        
+            .question-progress {
+                background: var(--light);
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            }
+        
+            .subject-grid {
+                display: grid;
+                grid-template-columns: repeat(6, 1fr);
+                gap: 4px;
+                margin-bottom: 20px;
+            }
+        
+            .question-box {
+                width: 100%;
+                aspect-ratio: 1;
+                background: var(--secondary-color);
+                opacity: 0.5;
+                border-radius: 3px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+        
+            .question-box.answered {
+                background: var(--accent-color);
+                opacity: 1;
+            }
+        
+            .subject-label {
+                font-weight: bold;
+                margin: 10px 0;
+                color: var(--primary-color);
+            }
+        </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="question-progress">
+                    <div class="subject-label" id="subject-label">English (60 Questions)</div>
+                    <div class="subject-grid" id="question-grid"></div>
+                </div>
+        
+                <div class="main-content">
+                    <div class="header">
+                        <h1>Scholafit Practice Test</h1>
+                    </div>
+        
+                    <div class="subject-tabs">
+                        <div class="subject-tab active" data-subject="English" data-questions="60">English</div>
+                        <div class="subject-tab" data-subject="Mathematics" data-questions="40">Mathematics</div>
+                        <div class="subject-tab" data-subject="Physics" data-questions="40">Physics</div>
+                        <div class="subject-tab" data-subject="Chemistry" data-questions="40">Chemistry</div>
+                    </div>
+        
+                    <div class="timer">Time Left: <span id="time">45:00</span></div>
+        
+                    <div class="question-container">
+                        <div class="question">
+                            <h3>Question 1</h3>
+                            <p>What is the main theme of Shakespeare's "Macbeth"?</p>
+                            <div class="options">
+                                <div class="option">A) Love and romance</div>
+                                <div class="option">B) Ambition and its corrupting influence</div>
+                                <div class="option">C) Family relationships</div>
+                                <div class="option">D) Social justice</div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="navigation">
+                        <div class="nav-buttons">
+                            <button class="nav-button" id="prev">Prev</button>
+                            <button class="nav-button" id="next">Next</button>
+                        </div>
+                        <button class="submit-button">Submit Test</button>
+                    </div>
+                </div>
+            </div>
+        
+            <script>
+                // Timer functionality
+                function startTimer(duration, display) {
+                    let timer = duration, minutes, seconds;
+                    let countdown = setInterval(function () {
+                        minutes = parseInt(timer / 60, 10);
+                        seconds = parseInt(timer % 60, 10);
+        
+                        minutes = minutes < 10 ? "0" + minutes : minutes;
+                        seconds = seconds < 10 ? "0" + seconds : seconds;
+        
+                        display.textContent = minutes + ":" + seconds;
+        
+                        if (--timer < 0) {
+                            clearInterval(countdown);
+                            alert("Time's up!");
+                        }
+                    }, 1000);
+                }
+        
+                // Create question grid
+                function createQuestionGrid(questionCount) {
+                    const container = document.getElementById('question-grid');
+                    // Clear existing grid
+                    container.innerHTML = '';
+                    // Create new grid
+                    for (let i = 0; i < questionCount; i++) {
+                        const box = document.createElement('div');
+                        box.className = 'question-box';
+                        box.setAttribute('data-question', i + 1);
+                        container.appendChild(box);
+                    }
+                }
+        
+                // Subject tabs functionality
+                const subjectTabs = document.querySelectorAll('.subject-tab');
+                let currentSubject = 'English';
+                let questionCounts = {
+                    'English': 60,
+                    'Mathematics': 40,
+                    'Physics': 40,
+                    'Chemistry': 40
+                };
+        
+                subjectTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        subjectTabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        
+                        currentSubject = tab.dataset.subject;
+                        const questionCount = parseInt(tab.dataset.questions);
+                        
+                        // Update subject label
+                        document.getElementById('subject-label').textContent = 
+                            `${currentSubject} (${questionCount} Questions)`;
+                        
+                        // Recreate grid with new question count
+                        createQuestionGrid(questionCount);
+                        
+                        // Reset current question to 1 when switching subjects
+                        currentQuestion = 1;
+                        
+                        // Here you would add logic to load the first question of the selected subject
+                    });
+                });
+        
+                // Initialize the page
+                window.onload = function () {
+                    // Start timer
+                    let fortyFiveMinutes = 45 * 60,
+                        display = document.querySelector('#time');
+                    startTimer(fortyFiveMinutes, display);
+        
+                    // Create initial question grid for English
+                    createQuestionGrid(60);
+                };
+        
+                // Options functionality
+                const options = document.querySelectorAll('.option');
+                options.forEach(option => {
+                    option.addEventListener('click', () => {
+                        // Remove selected class from all options
+                        options.forEach(opt => opt.classList.remove('selected'));
+                        // Add selected class to clicked option
+                        option.classList.add('selected');
+                        
+                        // Mark the current question as answered in the grid
+                        const questionBoxes = document.querySelectorAll('#question-grid .question-box');
+                        if (questionBoxes[currentQuestion - 1]) {
+                            questionBoxes[currentQuestion - 1].classList.add('answered');
+                        }
+                    });
+                });
+        
+                // Navigation functionality
+                let currentQuestion = 1;
+                let totalQuestions = 60; // Default for English
+        
+                document.getElementById('prev').addEventListener('click', () => {
+                    if (currentQuestion > 1) {
+                        currentQuestion--;
+                        // Load previous question logic would go here
+                    }
+                });
+        
+                document.getElementById('next').addEventListener('click', () => {
+                    const currentSubjectQuestions = questionCounts[currentSubject];
+                    if (currentQuestion < currentSubjectQuestions) {
+                        currentQuestion++;
+                        // Load next question logic would go here
+                    }
+                });
+        
+                // Submit button functionality
+                document.querySelector('.submit-button').addEventListener('click', () => {
+                    if(confirm('Are you sure you want to submit your test?')) {
+                        // Add submission logic here
+                        alert('Test submitted successfully!');
+                    }
+                });
+            </script>
+        </body>
+        </html>

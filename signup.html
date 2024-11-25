@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script><style>
+    :root {
+        --primary: #3498DB;  
+        --secondary: #E74C3C;
+        --background: #f5f5f5;
+        --text: #333;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+        background: var(--background);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    
+    .container {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .tabs {
+        display: flex;
+        margin-bottom: 2rem;
+    }
+    
+    .tab {
+        flex: 1;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        border-bottom: 2px solid #ddd;
+        transition: all 0.3s ease;
+    }
+    
+    .tab.active {
+        border-bottom: 2px solid var(--primary);
+        color: var(--primary);
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    input {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+    
+    input:focus {
+        border-color: var(--primary);
+    }
+    
+    #loginForm button {
+        background: var(--primary);
+    }
+    
+    #loginForm button:hover {
+        background: #2980b9;
+    }
+    
+    #signupForm button {
+        background: var(--secondary);
+    }
+    
+    #signupForm button:hover {
+        background: #c0392b;
+    }
+    
+    button {
+        width: 100%;
+        padding: 0.8rem;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    
+    .oauth-buttons {
+        margin-top: 1.5rem;
+    }
+    
+    .oauth-button {
+        width: 100%;
+        padding: 0.8rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    
+    .oauth-button svg {
+        margin-right: 10px;
+    }
+    
+    .oauth-button:hover {
+        background: #f5f5f5;
+    }
+    
+    .divider {
+        text-align: center;
+        margin: 1.5rem 0;
+        position: relative;
+    }
+    
+    .divider::before,
+    .divider::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 45%;
+        height: 1px;
+        background: #ddd;
+    }
+    
+    .divider::before {
+        left: 0;
+    }
+    
+    .divider::after {
+        right: 0;
+    }
+    
+    .logo {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .logo img {
+        width: 200px;
+        height: auto;
+    }
+    
+    .forgot-password {
+        text-align: right;
+        margin-bottom: 1rem;
+    }
+    
+    .forgot-password a {
+        color: var(--primary);
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+    
+    .forgot-password a:hover {
+        text-decoration: underline;
+    }
+    </style></head><body>
+        <div class="container">
+            <div class="logo">
+                <img src="images/Scholafit 1.png" alt="Scholafit logo - a blue wordmark with graduation cap icon in the 'o'" width="200" height="80">
+            </div>
+    
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('login')">Login</div>
+                <div class="tab" onclick="switchTab('signup')">Sign Up</div>
+            </div>
+    
+            <form id="loginForm" class="active">
+                <div class="form-group">
+                    <input type="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="forgot-password">
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+    
+            <form id="signupForm" style="display: none;">
+                <div class="form-group">
+                    <input type="text" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+    
+            <div class="divider">OR</div>
+    
+            <div class="oauth-buttons">
+                <div id="g_id_onload"
+                    data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                    data-callback="handleCredentialResponse">
+                </div>
+                <div class="oauth-button" onclick="signInWithGoogle()">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#DB4437" d="M21.35,11.1H12v3.8h5.3c-0.5,2.4-2.4,4.1-5.3,4.1c-3.2,0-5.8-2.6-5.8-5.8s2.6-5.8,5.8-5.8 c1.5,0,2.9,0.6,3.9,1.5l2.9-2.9C17.1,4.5,14.7,3.3,12,3.3c-5,0-9,4-9,9s4,9,9,9c5.2,0,8.7-3.7,8.7-8.9 C20.7,11.9,21.1,11.5,21.35,11.1z"/>
+                    </svg>
+                    Continue with Google
+                </div>
+                <div class="oauth-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#400090" d="M19.82,12H17V9.67h2.82C19.95,9.67,20,9.62,20,9.58V6.42c0-0.04-0.05-0.08-0.18-0.08H17V4h2.82 c0.13,0,0.18-0.04,0.18-0.08V0.92C20,0.88,19.95,0.84,19.82,0.84H4.18C4.05,0.84,4,0.88,4,0.92v3c0,0.04,0.05,0.08,0.18,0.08H7v2.34 H4.18C4.05,6.34,4,6.38,4,6.42v3.17c0,0.04,0.05,0.08,0.18,0.08H7V12H4.18C4.05,12,4,12.04,4,12.08v3.17c0,0.04,0.05,0.08,0.18,0.08 H7v2.34H4.18C4.05,17.66,4,17.71,4,17.75v3.17C4,20.96,4.05,21,4.18,21h15.64c0.13,0,0.18-0.04,0.18-0.08v-3.17 c0-0.04-0.05-0.08-0.18-0.08H17v-2.34h2.82c0.13,0,0.18-0.04,0.18-0.08v-3.17C20,12.04,19.95,12,19.82,12z"/>
+                    </svg>
+                    Continue with Yahoo
+                </div>
+                <div class="oauth-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#1877F2" d="M20.9,2H3.1C2.5,2,2,2.5,2,3.1v17.8C2,21.5,2.5,22,3.1,22h9.6v-7.7h-2.6v-3h2.6V9.2c0-2.6,1.6-4,3.9-4c1.1,0,2.1,0.1,2.3,0.1v2.7h-1.6c-1.3,0-1.5,0.6-1.5,1.5v1.9h3l-0.4,3h-2.6V22h5.1c0.6,0,1.1-0.5,1.1-1.1V3.1C22,2.5,21.5,2,20.9,2z"/>
+                    </svg>
+                    Continue with facebook
+                </div>
+            </div>
+        </div>
+    
+        <script>
+            function switchTab(tab) {
+                const tabs = document.querySelectorAll('.tab');
+                const loginForm = document.getElementById('loginForm');
+                const signupForm = document.getElementById('signupForm');
+    
+                tabs.forEach(t => t.classList.remove('active'));
+                if (tab === 'login') {
+                    tabs[0].classList.add('active');
+                    loginForm.style.display = 'block';
+                    signupForm.style.display = 'none';
+                } else {
+                    tabs[1].classList.add('active');
+                    loginForm.style.display = 'none';
+                    signupForm.style.display = 'block';
+                }
+            }
+    
+            function signInWithGoogle() {
+                google.accounts.id.initialize({
+                    client_id: 'YOUR_GOOGLE_CLIENT_ID',
+                    callback: handleCredentialResponse
+                });
+                google.accounts.id.prompt();
+            }
+    
+            function handleCredentialResponse(response) {
+                console.log("Encoded JWT ID token: " + response.credential);
+            }
+    
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('Login form submitted');
+            });
+    
+            document.getElementById('signupForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('Signup form submitted');
+            });
+        </script>
+    </body></html>

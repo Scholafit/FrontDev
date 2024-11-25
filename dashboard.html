@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <title>ScholaFit - Your Study Buddy</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+    :root {
+        --primary-color: #2C3E50;
+        --secondary-color: #3498DB;
+        --accent-color: #E74C3E;
+        --dark: #1a1a1a;
+        --light: #ffffff;
+    }
+    
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: #f5f6fa;
+    }
+    
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background: var(--primary-color);
+        align-items: center;
+    }
+    
+    .logo {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: var(--light);
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    
+    .logo img {
+        margin-right: 8px;
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+    }
+    
+    .hamburger {
+        display: none;
+        cursor: pointer;
+        padding: 10px;
+        z-index: 100;
+    }
+    
+    .hamburger div {
+        width: 25px;
+        height: 3px;
+        background-color: var(--light);
+        margin: 5px 0;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .upgrade-btn {
+        background: var(--accent-color);
+        color: var(--light);
+        padding: 8px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+    
+    .upgrade-btn:hover {
+        background: #c0392b;
+    }
+    
+    .user-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .dropbtn {
+        background: transparent;
+        color: var(--light);
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: var(--light);
+        min-width: 160px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        z-index: 1;
+        border-radius: 5px;
+    }
+    
+    .dropdown-content a {
+        color: var(--dark);
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+    
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+    
+    .user-dropdown:hover .dropdown-content {
+        display: block;
+    }
+    
+    .main-container {
+        display: flex;
+        min-height: 100vh;
+    }
+    
+    .sidebar {
+        width: 250px;
+        background: var(--primary-color);
+        padding: 20px 0;
+        color: var(--light);
+    }
+    
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .sidebar-menu li {
+        padding: 15px 25px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: background 0.3s ease;
+    }
+    
+    .sidebar-menu li:hover {
+        background: var(--secondary-color);
+    }
+    
+    .sidebar-menu li.active {
+        background: var(--secondary-color);
+    }
+    
+    .main-content {
+        flex: 1;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease-out;
+    }
+    
+    .main-content.active {
+        display: block;
+        opacity: 1;
+    }
+    
+    #dashboard-content.active {
+        animation: slideInRight 0.4s ease forwards;
+    }
+    
+    #profile-content.active {
+        animation: slideInUp 0.4s ease forwards;
+    }
+    
+    #analytics-content.active {
+        animation: fadeInScale 0.4s ease forwards;
+    }
+    
+    #upgrade-content.active {
+        animation: slideInLeft 0.4s ease forwards;
+    }
+    
+    #study-plan-content.active {
+        animation: slideInRight 0.4s ease forwards;
+    }
+    
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    .greeting {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    .dashboard-grid {
+        display: grid;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .row-1 {
+        grid-template-columns: repeat(3, 1fr);
+        display: grid;
+        gap: 20px;
+    }
+    
+    .row-2 {
+        grid-template-columns: repeat(2, 1fr);
+        display: grid;
+        gap: 20px;
+    }
+    
+    .row-3 {
+        grid-template-columns: 1fr;
+        display: grid;
+        gap: 20px;
+    }
+    
+    .card {
+        background: var(--light);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .card h3 {
+        color: var(--primary-color);
+        margin-top: 0;
+    }
+    
+    .quick-start {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .quick-start-item {
+        background: var(--primary-color);
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--light);
+    }
+    
+    .quick-start-item:hover {
+        background: var(--secondary-color);
+        transform: scale(1.02);
+    }
+    
+    .activity-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #ECF0F1;
+    }
+    
+    .deadline-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+    }
+    
+    .topic-item {
+        background: #ECF0F1;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 5px;
+    }
+    
+    .notification-item {
+        padding: 10px 0;
+        border-left: 3px solid var(--accent-color);
+        padding-left: 10px;
+        margin: 5px 0;
+    }
+    
+    footer {
+        background: var(--primary-color);
+        color: var(--light);
+        padding: 20px;
+        text-align: center;
+    }
+    
+    footer a {
+        color: var(--light);
+        text-decoration: none;
+        margin: 0 10px;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    .profile-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    .info-group {
+        margin-bottom: 15px;
+    }
+    
+    .info-group label {
+        font-weight: bold;
+        color: var(--primary-color);
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    .subject-levels {
+        display: grid;
+        gap: 10px;
+    }
+    
+    .pricing-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        margin-top: 30px;
+    }
+    
+    .pricing-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .pricing-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .pricing-card .price {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin: 20px 0;
+    }
+    
+    .pricing-card .period {
+        color: #666;
+        font-size: 1rem;
+    }
+    
+    .pricing-card .features {
+        list-style: none;
+        padding: 0;
+        margin: 30px 0;
+        text-align: left;
+    }
+    
+    .pricing-card .features li {
+        padding: 10px 0;
+        color: #444;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .pricing-card .features li::before {
+        content: "✓";
+        color: var(--accent-color);
+        font-weight: bold;
+    }
+    
+    .pricing-card .referral {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 20px 0;
+        color: var(--accent-color);
+        font-weight: bold;
+    }
+    
+    .pricing-card .cta-button {
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        width: 100%;
+    }
+    
+    .pricing-card .cta-button:hover {
+        background: #c0392b;
+    }
+    
+    /* Mobile responsive styles */
+    @media screen and (max-width: 768px) {
+        .main-container {
+            flex-direction: column;
+        }
+        
+        .sidebar {
+            width: 100%;
+            position: fixed;
+            top: 60px; /* Height of nav bar */
+            left: -100%;
+            height: calc(100vh - 60px);
+            transition: 0.3s ease-in-out;
+            z-index: 99;
+        }
+        
+        .sidebar.active {
+            left: 0;
+        }
+        
+        .hamburger {
+            display: block;
+        }
+        
+        /* Animated hamburger icon */
+        .hamburger.active div:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active div:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active div:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        .nav-container {
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            box-sizing: border-box;
+        }
+        
+        .main-content {
+            margin-top: 60px; /* Height of nav bar */
+            width: 100%;
+        }
+        
+        .dashboard-grid .row-1,
+        .dashboard-grid .row-2 {
+            grid-template-columns: 1fr;
+        }
+        
+        .analytics-grid,
+        .profile-grid,
+        .pricing-cards {
+            grid-template-columns: 1fr;
+        }
+        
+        .nav-right {
+            gap: 10px;
+        }
+        
+        .upgrade-btn {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+    }
+    
+    .study-plan {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .schedule-block {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+    
+    .schedule-block p {
+        margin: 8px 0;
+        padding: 8px;
+        background: white;
+        border-radius: 4px;
+        border-left: 3px solid var(--secondary-color);
+    }
+    
+    .focus-areas {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 10px;
+    }
+    
+    .focus-item {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    
+    .focus-item h4 {
+        color: var(--secondary-color);
+        margin: 0 0 10px 0;
+    }
+    
+    .focus-item ul {
+        margin: 10px 0;
+        padding-left: 20px;
+    }
+    
+    .focus-item ul li {
+        margin: 5px 0;
+    }
+    
+    .break-strategy, .weekly-goals {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+    
+    .break-strategy ul, .weekly-goals ul {
+        margin: 10px 0;
+        padding-left: 20px;
+    }
+    
+    .study-plan-actions {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .print-btn {
+        background: var(--secondary-color);
+        color: white;
+    }
+    
+    .print-btn:hover {
+        background: #2980b9;
+    }
+    
+    .calendar-btn {
+        background: var(--accent-color);
+        color: white;
+    }
+    
+    .calendar-btn:hover {
+        background: #c0392b;
+    }
+    
+    .calendar-integration {
+        position: relative;
+    }
+    
+    .calendar-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+        margin-top: 5px;
+        min-width: 200px;
+    }
+    
+    .calendar-dropdown.show {
+        display: block;
+    }
+    
+    .calendar-dropdown a {
+        display: block;
+        padding: 10px 15px;
+        color: var(--dark);
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+    
+    .calendar-dropdown a:hover {
+        background: #f5f5f5;
+    }
+    
+    @media print {
+        .nav-container,
+        .sidebar,
+        .study-plan-actions,
+        footer {
+            display: none !important;
+        }
+        
+        .main-content {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #ddd;
+        }
+    }
+    
+    .current-plan {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        margin-bottom: 20px;
+    }
+    
+    .current-plan h3 {
+        color: white;  /* Change text color to white */
+    }
+    
+    .plan-type {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0;
+    }
+    
+    .plan-expiry {
+        color: rgba(255, 255, 255, 0.8);
+        margin: 5px 0;
+    }
+    
+    .plan-features {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .referral-section {
+        margin-bottom: 20px;
+    }
+    
+    .referral-link-container {
+        display: flex;
+        gap: 10px;
+        margin: 15px 0;
+    }
+    
+    .referral-link-container input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 0.9rem;
+    }
+    
+    .copy-btn {
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 0 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: background 0.3s ease;
+    }
+    
+    .copy-btn:hover {
+        background: #c0392b;
+    }
+    
+    .referral-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .stat-item {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+    }
+    
+    .stat-label {
+        display: block;
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+    
+    .stat-value {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+    </style>
+    </head>
+    <body>
+    <div class="nav-container">
+        <a href="https://scholafit.com" class="logo">
+            <img src="images/Scholafit 1.png" alt="ScholaFit logo - wordmark with graduation cap icon in vibrant blue" width="32" height="32">
+            ScholaFit
+        </a>
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="nav-right">
+            <a href="payment.html" class="upgrade-btn">Get Premium</a>
+            <div class="user-dropdown">
+                <button class="dropbtn">
+                    Rinad
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="dropdown-content">
+                    <a href="dashboard.html">My Profile</a>
+                    <a href="https://scholafit.com/settings">Change Password</a>
+                    <a href="https://scholafit.com/logout">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="active" data-tab="dashboard">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    Dashboard
+                </li>
+                <li data-tab="profile">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                    </svg>
+                    Profile
+                </li>
+                <li data-tab="analytics">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    Analytics
+                </li>
+                <li data-tab="study-plan">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    Study Plan
+                </li>
+                <li data-tab="upgrade" class="upgrade-tab">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                    Upgrade
+                </li>
+            </ul>
+        </div>
+    
+        <div class="main-content" id="dashboard-content">
+            <div class="container">
+                <div class="greeting">
+                    <h1>Hi Rinad! 👋</h1>
+                    <p>You're doing great! Let's keep learning together.</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="row-1">
+                        <div class="card">
+                            <h3>What You've Done Lately</h3>
+                            <div class="activity-item">You finished Practice Test 3 - Nice work!</div>
+                            <div class="activity-item">You studied algebra topics - Keep it up!</div>
+                            <div class="activity-item">You got 85% on your last test - Amazing!</div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3>Your Progress</h3>
+                            <canvas id="readinessChart"></canvas>
+                        </div>
+                        
+                        <div class="card">
+                            <h3>Start Studying</h3>
+                            <div class="quick-start">
+                                <a href="test_instruction.html"><div class="quick-start-item">Take a Practice Test</div></a>
+                                <a href="personalized_learning.html"><div class="quick-start-item">Chat with Rita (Your Study Helper)</div></a>
+                                <a href="dashboard.html"><div class="quick-start-item">See How You're Doing</div></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row-2">
+                        <div class="card">
+                            <h3>Important Dates</h3>
+                            <div class="deadline-item">
+                                <span>Last day to register for UTME</span>
+                                <span>March 15</span>
+                            </div>
+                            <div class="deadline-item">
+                                <span>Your UTME exam</span>
+                                <span>April 25</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <h3>What to Study Next</h3>
+                            <div class="topic-item">Calculus (Math)</div>
+                            <div class="topic-item">Forces and Motion (Physics)</div>
+                            <div class="topic-item">Chemical Reactions (Chemistry)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row-3">
+                        <div class="card">
+                            <h3>New Updates</h3>
+                            <div class="notification-item">We just added new math practice: Trigonometry</div>
+                            <div class="notification-item">Message from Team: You're making great progress!</div>
+                            <div class="notification-item">New: Check out the latest exam tips</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="main-content" id="profile-content">
+            <div class="container">
+                <h2>My Profile</h2>
+                <div class="profile-grid">
+                    <div class="card personal-info">
+                        <h3>Personal Information</h3>
+                        <div class="info-group">
+                            <label>Full Name</label>
+                            <p>Rinad Adebayo</p>
+                        </div>
+                        <div class="info-group">
+                            <label>Age</label>
+                            <p>16</p>
+                        </div>
+                        <div class="info-group">
+                            <label>Selected UTME Subjects</label>
+                            <ul>
+                                <li>English Language (Compulsory)</li>
+                                <li>Mathematics</li>
+                                <li>Physics</li>
+                                <li>Chemistry</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card study-preferences">
+                        <h3>Study Preferences</h3>
+                        <div class="info-group">
+                            <label>Best Study Time</label>
+                            <p>Early Morning (5am - 8am)</p>
+                        </div>
+                        <div class="info-group">
+                            <label>Study Duration</label>
+                            <p>45 minutes with 15-minute breaks</p>
+                        </div>
+                        <div class="info-group">
+                            <label>Preferred Learning Method</label>
+                            <p>Visual learning through videos and diagrams</p>
+                        </div>
+                    </div>
+    
+                    <div class="card academic-goals">
+                        <h3>Academic Profile</h3>
+                        <div class="info-group">
+                            <label>Main Study Challenge</label>
+                            <p>Maintaining focus during long study sessions</p>
+                        </div>
+                        <div class="info-group">
+                            <label>Current Understanding</label>
+                            <div class="subject-levels">
+                                <div>English: Intermediate</div>
+                                <div>Mathematics: Advanced</div>
+                                <div>Physics: Intermediate</div>
+                                <div>Chemistry: Intermediate</div>
+                            </div>
+                        </div>
+                        <div class="info-group">
+                            <label>Target UTME Score</label>
+                            <p>300/400</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="main-content" id="analytics-content">
+            <div class="container">
+                <h2>My Learning Analytics</h2>
+                <div class="analytics-grid">
+                    <div class="card">
+                        <h3>Subject Performance</h3>
+                        <canvas id="subjectChart"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Credit Points Earned</h3>
+                        <canvas id="creditChart"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Achievement Progress</h3>
+                        <canvas id="achievementChart"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Ranking Comparison</h3>
+                        <canvas id="rankingChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="main-content" id="upgrade-content">
+            <div class="container">
+                <div class="card current-plan">
+                    <h3>Your Current Plan</h3>
+                    <div class="plan-details">
+                        <p class="plan-type">Free Plan</p>
+                        <p class="plan-expiry">Valid until: December 31, 2023</p>
+                        <div class="plan-features">
+                            <p>Limited access to practice tests</p>
+                            <p>Basic performance tracking</p>
+                            <p>Basic study materials</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card referral-section">
+                    <h3>Share & Earn</h3>
+                    <p>Share your referral link and earn rewards when friends subscribe!</p>
+                    <div class="referral-link-container">
+                        <input type="text" id="referralLink" value="https://scholafit.com/ref/RINAD123" readonly>
+                        <button onclick="copyReferralLink()" class="copy-btn">
+                            <span>Copy Link</span>
+                        </button>
+                    </div>
+                    <div class="referral-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Referrals</span>
+                            <span class="stat-value">5</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Earnings</span>
+                            <span class="stat-value">₦7,500</span>
+                        </div>
+                    </div>
+                </div>
+    
+                <h2>Upgrade Your Plan</h2>
+                <div class="pricing-cards">
+                    <div class="pricing-card">
+                        <h3>Premium</h3>
+                        <div class="price">₦5,000<span class="period">/month</span></div>
+                        <ul class="features">
+                            <li>Unlimited practice tests and quizzes</li>
+                            <li>Comprehensive performance analytics</li>
+                            <li>Advanced AI-powered learning paths</li>
+                            <li>Change subjects anytime</li>
+                            <li>Full access to study materials</li>
+                            <li>Priority customer support</li>
+                        </ul>
+                        <div class="referral">
+                            Earn ₦500 for every friend you refer!
+                        </div>
+                        <a href="payment.html"><button class="cta-button">Subscribe & Start Earning</button></a>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <h3>Quarterly</h3>
+                        <div class="price">₦12,000<span class="period">/student</span></div>
+                        <ul class="features">
+                            <li>All premium features</li>
+                            <li>Centralized management dashboard</li>
+                            <li>Customizable learning paths</li>
+                            <li>Dedicated account manager</li>
+                            <li>Premium support</li>
+                        </ul>
+                        <div class="referral">
+                            Earn ₦600 per referred student!
+                        </div>
+                        <a href="payment.html"><button class="cta-button">Subscribe & Start Earning</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="main-content" id="study-plan-content">
+            <div class="container">
+                <h2>Personalized Study Plan</h2>
+                <div class="study-plan-actions">
+                    <button class="action-btn print-btn" onclick="printStudyPlan()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+                            <path d="M6 14h12v8H6z"/>
+                        </svg>
+                        Print Study Plan
+                    </button>
+                    <div class="calendar-integration">
+                        <button class="action-btn calendar-btn" onclick="showCalendarOptions()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                            Add to Calendar
+                        </button>
+                        <div class="calendar-dropdown">
+                            <a href="#" onclick="addToGoogleCalendar()">Google Calendar</a>
+                            <a href="#" onclick="addToOutlook()">Outlook Calendar</a>
+                            <a href="#" onclick="addToAppleCalendar()">Apple Calendar</a>
+                            <a href="#" onclick="downloadICS()">Download .ics file</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card study-plan">
+                    <div class="info-group">
+                        <label>Daily Schedule (Based on your preferred time: 5am - 8am)</label>
+                        <div class="schedule-block">
+                            <p>5:00 - 5:45 AM: Mathematics (Advanced Level)</p>
+                            <p>6:00 - 6:45 AM: Physics (Intermediate Level)</p>
+                            <p>7:00 - 7:45 AM: Chemistry/English (Alternating Days)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <label>Focus Areas</label>
+                        <div class="focus-areas">
+                            <div class="focus-item">
+                                <h4>Mathematics (Priority)</h4>
+                                <p>Advanced topics to maintain excellence</p>
+                                <ul>
+                                    <li>Complex calculus problems</li>
+                                    <li>Advanced algebra concepts</li>
+                                    <li>UTME-style math questions</li>
+                                </ul>
+                            </div>
+                            <div class="focus-item">
+                                <h4>Physics & Chemistry</h4>
+                                <p>Intermediate level enhancement</p>
+                                <ul>
+                                    <li>Core concept reinforcement</li>
+                                    <li>Practice with diagrams (visual learning)</li>
+                                    <li>Laboratory calculations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="info-group">
+                        <label>Break Strategy (Based on 45min study sessions)</label>
+                        <div class="break-strategy">
+                            <p>• 15-minute breaks between subjects</p>
+                            <p>• Recommended activities during breaks:</p>
+                            <ul>
+                                <li>Light stretching</li>
+                                <li>Quick revision of previous session</li>
+                                <li>Hydration and snack</li>
+                            </ul>
+                        </div>
+                    </div>
+    
+                    <div class="info-group">
+                        <label>Weekly Goals (Targeting 300/400)</label>
+                        <div class="weekly-goals">
+                            <p>• Complete 3 practice tests per subject</p>
+                            <p>• Review and correct all mistakes</p>
+                            <p>• Focus on visual learning materials</p>
+                            <p>• Track progress using analytics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    const ctx = document.getElementById('readinessChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
+            datasets: [{
+                label: 'Your First Test Scores',
+                data: [65, 72, 78, 83, 85],
+                fill: false,
+                borderColor: '#3498DB',
+                tension: 0.1,
+                borderWidth: 2,
+                pointBackgroundColor: '#3498DB',
+                pointBorderColor: '#ffffff',
+                pointHoverBackgroundColor: '#ffffff',
+                pointHoverBorderColor: '#3498DB'
+            },
+            {
+                label: 'Your Second Test Scores',
+                data: [70, 75, 80, 85, 90],
+                fill: false,
+                borderColor: '#E74C3C',
+                tension: 0.1,
+                borderWidth: 2,
+                pointBackgroundColor: '#E74C3C',
+                pointBorderColor: '#ffffff',
+                pointHoverBackgroundColor: '#ffffff',
+                pointHoverBorderColor: '#E74C3C'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'How Your Scores Are Getting Better!'
+                }
+            }
+        }
+    });
+    
+    const subjectChart = new Chart(document.getElementById('subjectChart'), {
+        type: 'bar',
+        data: {
+            labels: ['English', 'Mathematics', 'Physics', 'Chemistry'],
+            datasets: [{
+                label: 'Current Score',
+                data: [75, 85, 70, 80],
+                backgroundColor: '#3498DB',
+                borderColor: '#2980B9',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Subject Performance'
+                }
+            }
+        }
+    });
+    
+    const creditChart = new Chart(document.getElementById('creditChart'), {
+        type: 'line',
+        data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+                label: 'Credit Points',
+                data: [100, 250, 400, 600],
+                borderColor: '#E74C3C',
+                fill: true
+            }]
+        }
+    });
+    
+    const achievementChart = new Chart(document.getElementById('achievementChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Achievements', 'Goals', 'Milestones'],
+            datasets: [{
+                label: 'Progress',
+                data: [3, 5, 2],
+                backgroundColor: '#3498DB',
+                borderColor: '#2980B9',
+                borderWidth: 1
+            }]
+        }
+    });
+    
+    const rankingChart = new Chart(document.getElementById('rankingChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Top 10%', 'Top 25%', 'Top 50%', 'Below 50%'],
+            datasets: [{
+                label: 'Your Ranking',
+                data: [20, 30, 25, 25],
+                backgroundColor: ['#E74C3E', '#3498DB', '#2ECC71', '#95A5A6']
+            }]
+        }
+    });
+    
+    document.querySelectorAll('.sidebar-menu li').forEach(item => {
+        item.addEventListener('click', async () => {
+            // Get the current active content
+            const currentActive = document.querySelector('.main-content.active');
+            
+            // Remove active class from all menu items
+            document.querySelectorAll('.sidebar-menu li').forEach(i => {
+                i.classList.remove('active');
+            });
+            
+            // Add active class to clicked menu item
+            item.classList.add('active');
+            
+            // Get the new content to show
+            const newContentId = `${item.dataset.tab}-content`;
+            const newContent = document.getElementById(newContentId);
+            
+            if (newContent) {
+                // If there's currently active content, fade it out first
+                if (currentActive) {
+                    currentActive.style.opacity = '0';
+                    await new Promise(resolve => setTimeout(resolve, 300)); // Wait for fade out
+                    currentActive.classList.remove('active');
+                }
+                
+                // Show and animate the new content
+                newContent.classList.add('active');
+                newContent.style.opacity = '1';
+                
+                // Ensure charts are properly rendered in analytics tab
+                if (item.dataset.tab === 'analytics') {
+                    // Small delay to ensure DOM is ready
+                    setTimeout(() => {
+                        // Re-render all charts
+                        subjectChart.update();
+                        creditChart.update();
+                        achievementChart.update();
+                        rankingChart.update();
+                    }, 100);
+                }
+            }
+        });
+    });
+    
+    // Update the initialization code
+    window.addEventListener('DOMContentLoaded', () => {
+        // Hide all content sections
+        document.querySelectorAll('.main-content').forEach(content => {
+            content.classList.remove('active');
+            content.style.opacity = '0';
+        });
+        
+        // Show dashboard content with animation
+        const dashboardContent = document.getElementById('dashboard-content');
+        dashboardContent.classList.add('active');
+        dashboardContent.style.opacity = '1';
+        
+        // Set dashboard tab as active
+        document.querySelector('[data-tab="dashboard"]').classList.add('active');
+    });
+    
+    // Mobile menu functionality
+    const hamburger = document.querySelector('.hamburger');
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+    
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        sidebar.classList.toggle('active');
+    });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !hamburger.contains(e.target) && window.innerWidth <= 768) {
+            hamburger.classList.remove('active');
+            sidebar.classList.remove('active');
+        }
+    });
+    
+    // Close mobile menu when selecting a menu item
+    document.querySelectorAll('.sidebar-menu li').forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                hamburger.classList.remove('active');
+                sidebar.classList.remove('active');
+            }
+        });
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            hamburger.classList.remove('active');
+            sidebar.classList.remove('active');
+        }
+    });
+    
+    function printStudyPlan() {
+        window.print();
+    }
+    
+    function showCalendarOptions() {
+        const dropdown = document.querySelector('.calendar-dropdown');
+        dropdown.classList.toggle('show');
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function closeDropdown(e) {
+            if (!e.target.closest('.calendar-integration')) {
+                dropdown.classList.remove('show');
+                document.removeEventListener('click', closeDropdown);
+            }
+        });
+    }
+    
+    function createCalendarEvent() {
+        return {
+            title: 'ScholaFit Study Plan',
+            description: 'Daily Schedule:\n5:00 - 5:45 AM: Mathematics\n6:00 - 6:45 AM: Physics\n7:00 - 7:45 AM: Chemistry/English',
+            startTime: '05:00',
+            endTime: '08:00',
+            recurrence: 'FREQ=WEEKLY;COUNT=12' // Repeats weekly for 12 weeks
+        };
+    }
+    
+    function addToGoogleCalendar() {
+        const event = createCalendarEvent();
+        const startDate = new Date();
+        startDate.setHours(5, 0, 0);
+        const endDate = new Date();
+        endDate.setHours(8, 0, 0);
+        
+        const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&details=${encodeURIComponent(event.description)}&dates=${startDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z/${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z&recur=${encodeURIComponent(event.recurrence)}`;
+        
+        window.open(googleCalendarUrl, '_blank');
+    }
+    
+    function addToOutlook() {
+        // Implementation for Outlook calendar integration
+        alert('Outlook Calendar integration coming soon!');
+    }
+    
+    function addToAppleCalendar() {
+        // Implementation for Apple calendar integration
+        downloadICS();
+    }
+    
+    function downloadICS() {
+        const event = createCalendarEvent();
+        const icsContent = generateICSFile(event);
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'study_plan.ics';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+    
+    function generateICSFile(event) {
+        const startDate = new Date();
+        startDate.setHours(5, 0, 0);
+        const endDate = new Date();
+        endDate.setHours(8, 0, 0);
+        
+        return `BEGIN:VCALENDAR
+    VERSION:2.0
+    BEGIN:VEVENT
+    DTSTART:${startDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+    DTEND:${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z
+    SUMMARY:${event.title}
+    DESCRIPTION:${event.description}
+    RRULE:${event.recurrence}
+    END:VEVENT
+    END:VCALENDAR`;
+    }
+    
+    function copyReferralLink() {
+        const referralLink = document.getElementById('referralLink');
+        referralLink.select();
+        document.execCommand('copy');
+        
+        const copyBtn = document.querySelector('.copy-btn');
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<span>Copied!</span>';
+        
+        setTimeout(() => {
+            copyBtn.innerHTML = originalText;
+        }, 2000);
+    }
+    </script>
+    
+    <footer>
+        <p>ScholaFit - Making UTME prep fun and easy!</p>
+        <div>
+            <a href="https://scholafit.com/terms">Rules</a>
+            <a href="https://scholafit.com/privacy">Privacy</a>
+            <a href="https://scholafit.com/faq">Help</a>
+            <a href="https://scholafit.com/contact">Talk to Us</a>
+        </div>
+    </footer>
+    
+    </body></html>

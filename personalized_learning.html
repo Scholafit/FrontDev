@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Personalized Learning with Rita</title>
+  <style>
+  :root {
+    --primary: #2C3E50;
+    --secondary: #3498DB;
+    --accent: #E74C3E;
+    --dark: #1a1a1a;
+    --light: #ffffff;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  body {
+    display: flex;
+    min-height: 100vh;
+    background: var(--light);
+  }
+  
+  .sidebar {
+    width: 280px;
+    background: var(--primary);
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    background: var(--light);
+  }
+  
+  .subject-section {
+    margin-bottom: 20px;
+  }
+  
+  .subject-header {
+    background: var(--secondary);
+    color: var(--light);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 5px;
+  }
+  
+  .topic-list {
+    display: none;
+    padding-left: 15px;
+  }
+  
+  .topic-list.active {
+    display: block;
+  }
+  
+  .topic {
+    padding: 8px;
+    cursor: pointer;
+    color: var(--light);
+    transition: all 0.3s;
+  }
+  
+  .topic:hover {
+    background: var(--secondary);
+    border-radius: 5px;
+  }
+  
+  .chat-container {
+    background: var(--light);
+    border-radius: 10px;
+    padding: 20px;
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  
+  .message {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--light);
+  }
+  
+  .rita-avatar {
+    background: var(--secondary);
+  }
+  
+  .user-avatar {
+    background: var(--accent);
+  }
+  
+  .message-content {
+    background: #f5f6fa;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 70%;
+    color: var(--dark);
+  }
+  
+  .input-area {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    border-top: 1px solid #eee;
+  }
+  
+  #message-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  #send-button {
+    padding: 12px 24px;
+    background: var(--secondary);
+    color: var(--light);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  #send-button:hover {
+    background: var(--primary);
+  }
+  
+  .welcome-message {
+    text-align: center;
+    color: var(--primary);
+    margin: 20px 0;
+  }
+  
+  .dashboard-btn {
+    margin-top: auto;
+    padding: 12px 24px;
+    background: var(--accent);
+    color: var(--light);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .dashboard-btn:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+  }
+  
+  .rita-face {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--secondary);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .rita-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+  <div class="sidebar">
+    <div class="subject-section">
+      <div class="subject-header">Mathematics</div>
+      <div class="topic-list">
+        <div class="topic" data-subject="Mathematics" data-topic="Algebra">Algebra</div>
+        <div class="topic" data-subject="Mathematics" data-topic="Sets">Sets</div>
+        <div class="topic" data-subject="Mathematics" data-topic="Logarithms">Logarithms</div>
+      </div>
+    </div>
+    
+    <div class="subject-section">
+      <div class="subject-header">Physics</div>
+      <div class="topic-list">
+        <div class="topic" data-subject="Physics" data-topic="Mechanics">Mechanics</div>
+        <div class="topic" data-subject="Physics" data-topic="Thermodynamics">Thermodynamics</div>
+        <div class="topic" data-subject="Physics" data-topic="Optics">Optics</div>
+      </div>
+    </div>
+    
+    <div class="subject-section">
+      <div class="subject-header">Chemistry</div>
+      <div class="topic-list">
+        <div class="topic" data-subject="Chemistry" data-topic="Organic Chemistry">Organic Chemistry</div>
+        <div class="topic" data-subject="Chemistry" data-topic="Chemical Bonding">Chemical Bonding</div>
+        <div class="topic" data-subject="Chemistry" data-topic="Periodic Table">Periodic Table</div>
+      </div>
+    </div>
+    
+    <div class="subject-section">
+      <div class="subject-header">Biology</div>
+      <div class="topic-list">
+        <div class="topic" data-subject="Biology" data-topic="Cell Biology">Cell Biology</div>
+        <div class="topic" data-subject="Biology" data-topic="Genetics">Genetics</div>
+        <div class="topic" data-subject="Biology" data-topic="Human Anatomy">Human Anatomy</div>
+      </div>
+    </div>
+  
+    <a href="dashboard.html" class="dashboard-btn">Return to Dashboard</a>
+  </div>
+  
+  <div class="main-content">
+    <div class="chat-container">
+      <div class="welcome-message">
+        <div class="rita-face">
+          <img src="images/Ritas face, a female versatile tutor in Nigeria, fun and beautiful, with a white background, dressed officially.png" 
+               alt="Rita - A professional Nigerian female tutor with a warm smile, wearing official attire" 
+               width="120" 
+               height="120">
+        </div>
+        <h1>👋 Meet Rita, Your AI Tutor</h1>
+        <p>Select a topic from the sidebar to start learning, or ask any question!</p>
+      </div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="input-area">
+        <input type="text" id="message-input" placeholder="Type your message here...">
+        <button id="send-button">Send</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const subjectHeaders = document.querySelectorAll('.subject-header');
+    subjectHeaders.forEach(header => {
+      header.addEventListener('click', () => {
+        const topicList = header.nextElementSibling;
+        topicList.classList.toggle('active');
+      });
+    });
+  
+    const chatMessages = document.getElementById('chat-messages');
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+    
+    const topics = document.querySelectorAll('.topic');
+    topics.forEach(topic => {
+      topic.addEventListener('click', () => {
+        const subject = topic.dataset.subject;
+        const topicName = topic.dataset.topic;
+        initiateTopicConversation(subject, topicName);
+      });
+    });
+  
+    async function initiateTopicConversation(subject, topic) {
+      addMessage(`Let's learn about ${topic} in ${subject}!`, 'rita');
+      
+      try {
+        const response = await fetch('/api/ai_completion', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            prompt: `You are Rita, a friendly and knowledgeable AI tutor. Provide an engaging introduction to ${topic} in ${subject}. Keep it concise but informative.`,
+            data: `${subject} ${topic}`
+          })
+        });
+        
+        const data = await response.json();
+        addMessage(data.message, 'rita');
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage("I apologize, but I'm having trouble connecting right now. Please try again.", 'rita');
+      }
+    }
+  
+    async function sendMessage() {
+      const message = messageInput.value.trim();
+      if (!message) return;
+  
+      addMessage(message, 'user');
+      messageInput.value = '';
+  
+      try {
+        const response = await fetch('/api/ai_completion', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            prompt: `You are Rita, a helpful AI tutor. Respond to the following question or statement in a friendly and educational way: "${message}"`,
+            data: message
+          })
+        });
+        
+        const data = await response.json();
+        addMessage(data.message, 'rita');
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage("I apologize, but I'm having trouble connecting right now. Please try again.", 'rita');
+      }
+    }
+  
+    function addMessage(message, sender) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message';
+      
+      const avatar = document.createElement('div');
+      avatar.className = `avatar ${sender}-avatar`;
+      avatar.textContent = sender === 'rita' ? 'R' : 'U';
+      
+      const content = document.createElement('div');
+      content.className = 'message-content';
+      content.textContent = message;
+      
+      messageDiv.appendChild(avatar);
+      messageDiv.appendChild(content);
+      chatMessages.appendChild(messageDiv);
+      
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+  
+    sendButton.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  
+    addMessage("Hi! I'm Rita, your AI tutor. What would you like to learn today? You can select a topic from the sidebar or ask me any question!", 'rita');
+  });
+  </script>
+  </body></html>

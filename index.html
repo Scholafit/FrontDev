@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholaFit - UTME Preparation Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2C3E50;
+            --secondary-color: #3498DB;
+            --accent-color: #E74C3C;
+            --nav-text-color: #3498DB;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background-color: white !important;
+            padding: 0 1rem; /* Adjust padding to ensure proper vertical centering */
+            min-height: 80px; /* Ensure navbar is tall enough for larger logo */
+        }
+
+        .navbar .nav-link {
+            color: var(--nav-text-color) !important;
+        }
+
+        .navbar .navbar-toggler {
+            border-color: var(--nav-text-color);
+        }
+
+        .navbar .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(52, 152, 219, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        .auth-buttons .btn-outline-light {
+            color: var(--nav-text-color);
+            border-color: var(--nav-text-color);
+        }
+
+        .auth-buttons .btn-outline-light:hover {
+            background-color: var(--nav-text-color);
+            color: white;
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(52, 152, 219, 0.85)), 
+                        url("/R.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 80vh;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 0 auto; /* Center horizontally */
+            background: none; /* Remove the dark background */
+            backdrop-filter: none; /* Remove the blur effect */
+        }
+
+        .feature-card {
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .ai-animation {
+            animation: pulse 2s infinite;
+        }
+
+        .ai-gif-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+            margin: 0 auto; /* Maintain centering */
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .cta-button {
+            background: var(--accent-color);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            border: none;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            background: #c0392b;
+        }
+
+        .auth-buttons .btn {
+            margin-left: 10px;
+        }
+
+        .hero-section h1 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-section p {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .floating-shapes svg {
+            opacity: 0.8;
+        }
+
+        .navbar-brand img {
+            max-height: 70px; /* Increased from 60px */
+            width: auto;
+            padding: 3px 0; /* Reduced padding slightly to accommodate larger size */
+            filter: drop-shadow(0 0 2px rgba(0,0,0,0.1)); /* Add subtle shadow for emphasis */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/Scholafit 1.png" alt="Scholafit Logo - Blue wordmark with graduation cap icon" height="70">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pricing.html">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="About.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item auth-buttons">
+                        <a class="btn btn-outline-light me-2" href="signup.html">Login</a>
+                        <a class="btn btn-danger" href="signup.html">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section d-flex align-items-center">
+        <div class="floating-shapes">
+            <!-- SVG Shapes Animation -->
+            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <circle cx="80" cy="20" r="5" fill="rgba(255,255,255,0.1)">
+                    <animate attributeName="cy" values="20;80;20" dur="3s" repeatCount="indefinite"/>
+                </circle>
+                <rect x="10" y="10" width="10" height="10" fill="rgba(255,255,255,0.1)">
+                    <animate attributeName="x" values="10;90;10" dur="4s" repeatCount="indefinite"/>
+                </rect>
+            </svg>
+        </div>
+        <div class="container content-wrapper">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Excel in Your UTME Preparation</h1>
+                    <p class="lead mb-4">Transform your UTME preparation with personalized learning paths, adaptive quizzes, and real-time performance tracking.</p>
+                    <a href=""><button class="cta-button">Start Learning Now</button></a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ai-gif-container">
+                        <img alt="animated AI brain visualization with neural networks and pulsing connections, modern tech style" src="https://media.giphy.com/media/l0HlTy9x8FZo0XO1i/giphy.gif" width="400" height="400">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Why Choose ScholaFit?</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card p-4">
+                        <i class="fas fa-brain fa-3x mb-3 text-primary"></i>
+                        <h3>Smart Learning</h3>
+                        <p>Our system adapts to your learning style and pace, creating personalized study plans.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card p-4">
+                        <i class="fas fa-chart-line fa-3x mb-3 text-primary"></i>
+                        <h3>Performance Analytics</h3>
+                        <p>Track your progress with detailed analytics and insights to improve your weak areas.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card p-4">
+                        <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+                        <h3>Community Support</h3>
+                        <p>Join a community of learners and get support from experienced mentors.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="bg-primary text-white py-5">
+        <div class="container text-center">
+            <h2 class="mb-4">Ready to Begin Your UTME Success Journey?</h2>
+            <p class="lead mb-4">Join thousands of students already preparing with ScholaFit</p>
+            <a href="signup.html"><button class="cta-button">Get Started Free</button></a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About ScholaFit</h5>
+                    <p>Revolutionizing UTME preparation with smart learning solutions.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="https://scholafit.com/terms" class="text-white">Terms of Service</a></li>
+                        <li><a href="https://scholafit.com/privacy" class="text-white">Privacy Policy</a></li>
+                        <li><a href="https://scholafit.com/faq" class="text-white">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect With Us</h5>
+                    <div class="d-flex gap-3">
+                        <a href="https://facebook.com/scholafit" class="text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="https://twitter.com/scholafit" class="text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/scholafit" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add animation on scroll
+        window.addEventListener('scroll', function() {
+            const features = document.querySelectorAll('.feature-card');
+            features.forEach(feature => {
+                const position = feature.getBoundingClientRect();
+                if(position.top < window.innerHeight) {
+                    feature.style.opacity = '1';
+                    feature.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test_instruction</title>
+    <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.6;
+      color: #2C3E50;
+      background: #f5f7fa;
+      padding: 2rem;
+    }
+    
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #2C3E50;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+    .nav-link {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    
+    .nav-link:hover {
+      opacity: 0.8;
+      color: #3498DB;
+    }
+    
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: #ffffff;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    
+    .dropdown-item {
+      display: block;
+      padding: 0.75rem 1rem;
+      color: #2C3E50;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    
+    .dropdown-item:hover {
+      background: #f0f4f8;
+      color: #3498DB;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 5rem auto 0;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      color: #2C3E50;
+      margin-bottom: 1.5rem;
+      font-size: 2.5rem;
+    }
+    
+    .info-card {
+      background: #f8fafc;
+      border-left: 4px solid #3498DB;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .feature {
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      transition: transform 0.2s;
+    }
+    
+    .feature:hover {
+      transform: translateY(-2px);
+    }
+    
+    .feature h3 {
+      color: #3498DB;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .feature svg {
+      width: 24px;
+      height: 24px;
+      stroke: #3498DB;
+    }
+    
+    .important-notes {
+      background: #E74C3E;
+      color: #ffffff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+    }
+    
+    .important-notes h3 {
+      color: #ffffff;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: #3498DB;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.2s;
+      margin-top: 1.5rem;
+    }
+    
+    .btn:hover {
+      background: #2980b9;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .ready-text {
+      font-size: 1.25rem;
+      color: #3498DB;
+      margin-top: 2rem;
+      animation: pulse 2s infinite;
+    }
+    </style>
+</head>
+    <nav class="navbar">
+      <a href="index.html" class="logo">
+        ScholaFit
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <div class="dropdown">
+          <a href="dashboard.html" class="nav-link">Profile</a>
+          <div class="dropdown-content">
+            <a href="personalized_learning.html" class="dropdown-item">Chat with Rita</a>
+            <a href="payment.html" class="dropdown-item">Make Payment</a>
+            <a href="dashboard.html" class="dropdown-item">Progress</a>
+            <a href="#" class="dropdown-item">Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="container">
+      <h1>ScholaFit Testing Platform</h1>
+      
+      <div class="info-card">
+        <p>Welcome to ScholaFit! This guide will help you understand the testing platform and ensure you're well-prepared for your exam.</p>
+      </div>
+    
+      <div class="features">
+        <div class="feature">
+          <h3>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Duration
+          </h3>
+          <p>2 hours (120 minutes) to complete all sections</p>
+        </div>
+    
+        <div class="feature">
+          <h3>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+            Subjects
+          </h3>
+          <p>4 comprehensive subject areas covered</p>
+        </div>
+    
+        <div class="feature">
+          <h3>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            Navigation
+          </h3>
+          <p>Easy subject switching with tabs and question grid navigation</p>
+        </div>
+    
+        <div class="feature">
+          <h3>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+            </svg>
+            Progress Tracking
+          </h3>
+          <p>Color-coded indicators show your completion status</p>
+        </div>
+      </div>
+    
+      <div class="important-notes">
+        <h3>⚠️ Important Notes:</h3>
+        <ul>
+          <li>Ensure a stable internet connection throughout the exam</li>
+          <li>Do not refresh or close your browser during the test</li>
+          <li>Answer all questions before the time limit expires</li>
+          <li>The submit button will remain disabled until all questions are answered</li>
+        </ul>
+      </div>
+    
+      <p class="ready-text">Ready to ace that exam? 😄</p>
+      
+      <a href="question.html" class="btn">Start Test</a>
+    </div>
+    </html>
